@@ -7,14 +7,14 @@ export default function Header() {
         <header className="border-b bg-slate-100 backdrop:fill-red-50">
             <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div className="flex lg:flex-1">
-                    <a href="#" className="-m-1.5 p-1.5">
+                    <Link to="/" className="-m-1.5 p-1.5">
                         <span className="sr-only">Your Company</span>
                         <img
                             className="h-8 w-auto"
                             src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
                             alt=""
                         />
-                    </a>
+                    </Link>
                 </div>
 
                 <div className="hidden md:flex lg:gap-x-12">
@@ -96,12 +96,14 @@ export default function Header() {
                                 <div className="space-y-2 py-6 flex flex-col gap-3">
                                     <Link
                                         to="/"
+                                        onClick={() => setOpen(false)}
                                         className="text-md font-semibold leading-6 text-gray-900 hover:text-sky-400"
                                     >
                                         Home
                                     </Link>
                                     <Link
                                         to="/photos"
+                                        onClick={() => setOpen(false)}
                                         className="text-md font-semibold leading-6 text-gray-900 hover:text-sky-400"
                                     >
                                         Gallery
@@ -110,6 +112,7 @@ export default function Header() {
                                 <div className="py-6">
                                     <a
                                         href="#"
+                                        onClick={() => setOpen(false)}
                                         className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:text-sky-400"
                                     >
                                         Log in
