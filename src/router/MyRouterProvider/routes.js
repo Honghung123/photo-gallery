@@ -9,18 +9,15 @@ export const routes = [
     {
         path: "/",
         element: <HomePage />,
-        errorElement: <NotFoundPage />,
         children: [],
     },
     {
         path: "/photos",
         element: <GalleryPage />,
-        errorElement: <NotFoundPage />,
         children: [],
     },
     {
         path: "/photos/:id",
         element: <ImageDetailPage />,
-        errorElement: <NotFoundPage />,
     },
 ];

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "../../components/Loading";
+import { Link } from "react-router-dom";
 
 export default function ImageDetailPage() {
+    // Get image id from url
     const imgId = useParams().id;
+    // A state used to store the image has id above
     const [image, setImage] = useState(null);
+    // A state used to indicate that loading will show when fetching images
     const [loading, setLoading] = useState(true);
 
     const fetchImages = async () => {
@@ -14,6 +18,7 @@ export default function ImageDetailPage() {
         try {
             const response = await fetch(API_URL);
             const targetImage = await response.json();
+            // Wait 1s to demo loading state
             setTimeout(() => {
                 setImage(targetImage?.id ? targetImage : null);
                 setLoading(false);
@@ -24,6 +29,7 @@ export default function ImageDetailPage() {
         }
     };
 
+    // Fetch images one time when user access this page
     useEffect(() => {
         fetchImages();
     }, [imgId]);
@@ -50,6 +56,14 @@ export default function ImageDetailPage() {
                     <h1 className="text-2xl font-bold text-rose-400 py-2">Image Not Found</h1>
                 </div>
             )}
+            <div className="text-center">
+                <Link
+                    to="/photos"
+                    className="inline-block text-md sm:text-lg px-2 py-1 sm:px-4 sm:py-2 font-medium text-white bg-sky-400 hover:bg-sky-600 my-6 rounded-full"
+                >
+                    Back to gallery
+                </Link>
+            </div>
         </div>
     );
 }

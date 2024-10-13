@@ -7,13 +7,21 @@ import MenuSetting from "../../components/MenuSetting";
 const API_URL = `https://api.unsplash.com/photos?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`;
 
 export default function GalleryPage() {
+    // A state used to store fetched images
     const [images, setImages] = useState([]);
+    // A state used to store the current page
     const [page, setPage] = useState(1);
+    // A state used to store the current page
     const [perPage, setPerPage] = useState(10);
+    // A state used to indicate that there are more images to load or not
     const [hasMore, setHasMore] = useState(true);
+    // A state used to indicate that there is any error has occurred or not when fetching images
     const [error, setError] = useState(null);
+    // A state used to store the value of the input field for perPage
     const [tempPerPage, setTempPerPage] = useState(perPage);
+    // A state used to store the maximum number of images to load
     const [maxLoadingImages, setMaxLoadingImages] = useState(import.meta.env.VITE_MAX_IMAGES);
+    // A state used to store the value of the input field for the maximum number of images to load
     const [tempMaxLoadingImages, setTempMaxLoadingImages] = useState(maxLoadingImages);
 
     const handleChangedPerPage = () => {
@@ -22,7 +30,8 @@ export default function GalleryPage() {
         setPage(1);
         setImages([]);
         setHasMore(true);
-        alert("Scroll down to load images");
+        // Scroll on Y axis, 0 on X axis. This is used to trigger fetching images
+        window.scrollBy(0, (2 * 96) / 2.54);
     };
 
     const fetchImages = async () => {

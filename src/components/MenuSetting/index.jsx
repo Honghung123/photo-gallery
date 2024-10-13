@@ -7,7 +7,7 @@ export default function MenuSetting({ children, style }) {
     };
     return (
         <div className="relative">
-            <button onClick={() => handleOpenSettings()}>
+            <button onClick={() => handleOpenSettings()} title="Settings">
                 <img
                     className="w-6 h-6 hover:rotate-180 transition-all duration-500"
                     src="https://www.svgrepo.com/show/13688/settings.svg"
