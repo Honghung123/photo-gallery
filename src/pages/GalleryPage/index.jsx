@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "../../components/Loading";
+import Gallery from "../../components/Gallery";
+import MenuSetting from "../../components/MenuSetting";
 
 const API_URL = `https://api.unsplash.com/photos?client_id=${import.meta.env.VITE_UNSPLASH_ACCESS_KEY}`;
 
@@ -11,19 +12,13 @@ export default function GalleryPage() {
     const [perPage, setPerPage] = useState(10);
     const [hasMore, setHasMore] = useState(true);
     const [error, setError] = useState(null);
-    const [openSetting, setOpenSetting] = useState(false);
     const [tempPerPage, setTempPerPage] = useState(perPage);
     const [maxLoadingImages, setMaxLoadingImages] = useState(import.meta.env.VITE_MAX_IMAGES);
     const [tempMaxLoadingImages, setTempMaxLoadingImages] = useState(maxLoadingImages);
 
-    const handleOpenSettings = () => {
-        setOpenSetting(!openSetting);
-    };
-
     const handleChangedPerPage = () => {
         setPerPage(tempPerPage);
         setMaxLoadingImages(tempMaxLoadingImages);
-        setOpenSetting(false);
         setPage(1);
         setImages([]);
         setHasMore(true);
@@ -58,53 +53,55 @@ export default function GalleryPage() {
     }, []);
 
     return (
-        <div className="bg-white dark:bg-gray-800 h-screen min-h-[80vh] h-auto pb-8">
+        <div className="bg-white dark:bg-gray-800 min-h-[80vh] h-auto pb-8">
             <div className="mx-auto max-w-screen-2xl px-4 md:px-8">
                 <div className="p-10">
                     <p className="text-center text-7xl">Gallery</p>
                     <div className="flex justify-end">
-                        <div className="relative">
-                            <button onClick={() => handleOpenSettings()}>
-                                <img
-                                    className="w-6 h-6 hover:rotate-180 transition-all duration-500"
-                                    src="https://www.svgrepo.com/show/13688/settings.svg"
-                                    alt=""
-                                />
-                            </button>
-                            {openSetting && (
-                                <ul className="border rounded-xl p-4 z-50 absolute bottom-0 right-0 bg-white shadow-lg translate-y-full min-w-[20rem]">
-                                    <li className="p-2 flex gap-4 items-center">
-                                        <span className="font-semibold">Per page: </span>
-                                        <input
-                                            type="number"
-                                            className="border rounded-3 p-2"
-                                            value={tempPerPage}
-                                            onChange={(e) => setTempPerPage(e.target.value)}
-                                            min="5"
-                                            max="15"
-                                        />
-                                    </li>
-                                    <li className="p-2 flex gap-4">
-                                        <span className="font-semibold">Max loading images: </span>
-                                        <input
-                                            type="number"
-                                            className="border rounded-3 p-2"
-                                            value={tempMaxLoadingImages}
-                                            onChange={(e) => setTempMaxLoadingImages(e.target.value)}
-                                            min="30"
-                                            step="5"
-                                            max="100"
-                                        />
-                                    </li>
+                        <MenuSetting
+                            style={{
+                                position: "absolute",
+                                right: "0",
+                                bottom: "0",
+                                zIndex: "99",
+                                transform: "translateY(100%)",
+                                minWidth: "300px",
+                            }}
+                        >
+                            <ul className="border rounded-xl p-4 bg-white shadow-lg">
+                                <li className="p-2 flex gap-4 items-center justify-between">
+                                    <span className="font-semibold">Per page: </span>
+                                    <input
+                                        type="number"
+                                        className="border rounded-3 p-2"
+                                        value={tempPerPage}
+                                        onChange={(e) => setTempPerPage(e.target.value)}
+                                        min="5"
+                                        max="15"
+                                    />
+                                </li>
+                                <li className="p-2 flex gap-4">
+                                    <span className="font-semibold">Max loading images: </span>
+                                    <input
+                                        type="number"
+                                        className="border rounded-3 p-2"
+                                        value={tempMaxLoadingImages}
+                                        onChange={(e) => setTempMaxLoadingImages(e.target.value)}
+                                        min="30"
+                                        step="5"
+                                        max="100"
+                                    />
+                                </li>
+                                <div className="text-center">
                                     <button
-                                        className="bg-sky-400 hover:bg-sky-600 rounded-md px-4 py-2 text-white font-semibold"
+                                        className="bg-sky-400 hover:bg-sky-600 rounded-md px-4 py-2 text-white font-semibold inline-block"
                                         onClick={handleChangedPerPage}
                                     >
                                         Save
                                     </button>
-                                </ul>
-                            )}
-                        </div>
+                                </div>
+                            </ul>
+                        </MenuSetting>
                     </div>
                 </div>
                 {error && (
@@ -131,24 +128,7 @@ export default function GalleryPage() {
                         )
                     }
                 >
-                    {images.map((image, index) => (
-                        <Link
-                            to={`/photos/${image.id}`}
-                            key={index}
-                            className="group relative flex h-48 items-end overflow-hidden rounded-lg bg-gray-100 shadow-lg md:h-80 grow basis-[10rem] sm:basis-[20rem]"
-                        >
-                            <img
-                                src={image.urls.small}
-                                loading="lazy"
-                                alt={image.alt_description}
-                                className="absolute inset-0 h-full w-full object-cover object-center transition duration-200 group-hover:scale-110"
-                            />
-
-                            <span className="relative ml-4 mb-3 block text-sm text-white text-center md:ml-5 md:text-lg">
-                                {image.user.name || "No description available"}
-                            </span>
-                        </Link>
-                    ))}
+                    <Gallery photos={images} />
                 </InfiniteScroll>
             </div>
         </div>
